@@ -9,13 +9,13 @@ Promise.all(fileUrls.map(url =>
   // ファイルの内容が配列に格納される
   const fileContents = responses;
   const result0 = await minify(fileContents[0], {sourceMap: true});
-  console.log(result0.code);
   // // スクリプトをセットしてボタンを表示
-  // const drawRectangleButtons = document.getElementsByClassName('draw-rectangle');
-  // for (let i = 0; i < drawRectangleButtons.length; i++) {
-  //   drawRectangleButtons[i].href = `javascript:${result0.code}void(0);`;
-  //   drawRectangleButtons[i].style.display = 'inline';
-  // }
+  const button0 = document.getElementById('scriptTextHtml');
+  button0.href = `javascript:${result0.code}void(0);`;
+  // hidden classを削除して表示
+  button0.classList.remove('hidden');
+
+
   // const result1 = await minify(fileContents[1], {sourceMap: true});
   // const drawTextareaButtons = document.getElementsByClassName('draw-textarea');
   // console.log(drawTextareaButtons)
