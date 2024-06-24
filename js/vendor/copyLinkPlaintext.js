@@ -173,4 +173,4 @@ __tt.CopyLink = class {
   }
 }
 
-__tt.CopyLink.textHtml()
+__tt.CopyLink.plain()
