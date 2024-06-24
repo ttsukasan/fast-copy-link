@@ -2,7 +2,7 @@ import {minify} from 'terser'
 
 // jsをテキストとして取得
 // github pagesではbase pathが変わることを考慮している TODO: 環境変数にしたい
-const fileUrls = ["js/copyLinkTextHtml.js"].map(path => `${window.location.pathname}${path}`);
+const fileUrls = ["js/vendor/copyLinkTextHtml.js"].map(path => `${window.location.pathname}${path}`);
 Promise.all(fileUrls.map(url =>
   fetch(url).then(response => response.text())
 )).then(async responses => {

@@ -2,7 +2,6 @@ window.__tt ||= {}
 __tt.CopyLink = class {
 
   constructor(type) {
-    // this.index = index
     this.type = type || 'plain'
     this.toast = document.createElement('div')
     this.toast.textContent = `Copied:`
