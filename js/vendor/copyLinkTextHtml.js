@@ -4,7 +4,7 @@ __tt.CopyLink = class {
   constructor(type) {
     this.type = type || 'plain'
     this.toast = document.createElement('div')
-    this.toast.textContent = `Copied:`
+    this.toast.textContent = ''
     this.toast.style.position = 'fixed'
     this.toast.style.top = '10px'
     this.toast.style.left = '10px'
@@ -14,12 +14,13 @@ __tt.CopyLink = class {
     this.toast.style.borderRadius = '5px'
     this.toast.style.zIndex = '10000'
     this.toast.style.fontFamily = 'Arial, sans-serif'
-    this.toast.style.transition = 'opacity .5s ease-in'
+    this.toast.style.transition = 'opacity .3s ease-in'
     // ページタイトルとURLを取得
     this.pageTitle = document.title
     this.pageURL = window.location.href
     this.copyElement = null
     this.successMessage = ''
+    this.selection = null
     // 後からハンドラーを削除できるようにするために、メソッドをバインドしておく
     this.copyUsingClipboardAPIHandler = this.copyUsingClipboardAPIHandler.bind(this)
 
@@ -38,10 +39,10 @@ __tt.CopyLink = class {
   hideToast() {
     setTimeout(() => {
       this.toast.style.opacity = '0'
-    }, 2000)
+    }, 1500)
     setTimeout(() => {
       document.body.removeChild(this.toast)
-    }, 2500)
+    }, 2000)
   }
 
   resetStyle(el) {
@@ -58,41 +59,52 @@ __tt.CopyLink = class {
     el.style.backgroundColor = 'initial'
   }
 
+  selectTempDiv() {
+    var div = document.createElement('div')
+    div.contentEditable = true
+    div.innerHTML = this.copyElement.outerHTML
+    document.body.appendChild(div)
+    var range = document.createRange()
+    range.selectNodeContents(div)
+    this.selection = window.getSelection()
+    this.selection.removeAllRanges()
+    this.selection.addRange(range)
+    return div
+  }
+
+  selectTextarea() {
+    var textarea = document.createElement('textarea')
+    textarea.value = this.copyElement.textContent
+    document.body.appendChild(textarea)
+    textarea.select()
+    return textarea
+  }
+
   copyUsingGetSelection() {
-    var tempDiv = document.createElement('div')
-    this.resetStyle(tempDiv)
-    var success = false
-    var selection = window.getSelection()
-
+    var dom = null
     try {
-      tempDiv.contentEditable = true
-      tempDiv.innerHTML = this.copyElement.outerHTML
-      document.body.appendChild(tempDiv)
+      if (this.type === 'textHtml') {
+        dom = this.selectTempDiv()
+      } else {
+        dom = this.selectTextarea()
+      }
 
-      var range = document.createRange()
-      range.selectNodeContents(tempDiv)
+      if (!document.execCommand('copy')) {
+        throw new Error('Failed execCommand')
+      }
 
-      // selection.removeAllRanges()
-      // selection.addRange(range)
-      window.getSelection().removeAllRanges()
-      window.getSelection().addRange(range)
-
-      document.execCommand('copy')
       this.updateToast(this.successMessage)
       this.showToast()
       this.hideToast()
-      success = true
     } catch (err) {
       console.warn('Failed to copy text using getSelection: ', err)
+      throw err
     } finally {
-      if (tempDiv && tempDiv.parentNode) {
-        tempDiv.parentNode.removeChild(tempDiv)
+      if (dom && dom.parentNode) {
+        dom.parentNode.removeChild(dom)
       }
-      // selection && selection.removeAllRanges()
-      window.getSelection().removeAllRanges()
-
+      this.selection && this.selection.removeAllRanges()
     }
-    return success
   }
 
   copyUsingClipboardAPI() {
@@ -106,23 +118,8 @@ __tt.CopyLink = class {
         'text/plain': new Blob([`[${this.pageTitle}](${this.pageURL})`], {type: 'text/plain'}),
       })
     }
-    // var item = {
-    //   "textHtml": new Blob([this.copyElement.outerHTML], { type: "text/html" }),
-    //   "plain": new Blob([this.copyElement.textContent], { type: "text/plain" }),
-    //   "markdown": new Blob([this.copyElement.textContent], { type: "text/plain" })
-    // }[this.type]
     if (navigator.clipboard && navigator.clipboard.write) {
-
-      // 'text/plain': new Blob([this.pageTitle + ' - ' + this.pageURL], {type: 'text/plain'}),
-      navigator.clipboard.write([
-        clipboardItem,
-        // new ClipboardItem({
-        //   [item.type]: item
-        // })
-      ]).then(() => {
-
-        // console.log(item, item.type)
-        console.log(this.copyElement.outerHTML)
+      navigator.clipboard.write([clipboardItem]).then(() => {
         this.updateToast(this.successMessage)
         this.hideToast()
       }).catch((error) => {
@@ -135,9 +132,7 @@ __tt.CopyLink = class {
 
   copyUsingClipboardAPIHandler() {
     document.removeEventListener('click', this.copyUsingClipboardAPIHandler)
-    setTimeout(() => {
-      this.copyUsingClipboardAPI()
-    }, 100)
+    this.copyUsingClipboardAPI()
   }
 
   exec() {
@@ -156,7 +151,9 @@ __tt.CopyLink = class {
     this.successMessage = `コピーしました: ${this.copyElement.textContent}`
 
     // getSelectionでコピーできない場合は、Clipboard APIを使う
-    if (!this.copyUsingGetSelection()) {
+    try {
+      this.copyUsingGetSelection()
+    } catch (e) {
       document.addEventListener('click', this.copyUsingClipboardAPIHandler)
       this.updateToast('⚠️ ページ内をクリックしてコピーを完了します。', 'warn')
       this.showToast()
@@ -178,4 +175,3 @@ __tt.CopyLink = class {
 }
 
 __tt.CopyLink.textHtml()
-// __tt.CopyLink.plain()
