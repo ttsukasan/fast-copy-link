@@ -1,5 +1,7 @@
 # fast-copy-link
 
+https://ttsukasan.github.io/fast-copy-link/
+
 
 # thanks
 
