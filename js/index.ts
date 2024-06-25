@@ -11,20 +11,17 @@ const fileUrls = [
 Promise.all(fileUrls.map(url =>
   fetch(url).then(response => response.text())
 )).then(async responses => {
-  // ファイルの内容が配列に格納される
-  const fileContents = responses;
-
-  const result0 = await minify(fileContents[0], {sourceMap: true});
+  const result0 = await minify(responses[0], {sourceMap: false});
   const button0 = document.getElementById('scriptTextHtml') as HTMLAnchorElement;
   button0.href = `javascript:${result0.code}void(0);`;
   button0.classList.remove('hidden');
 
-  const result1 = await minify(fileContents[1], {sourceMap: true});
+  const result1 = await minify(responses[1], {sourceMap: false});
   const button1 = document.getElementById('scriptMarkdown') as HTMLAnchorElement;
   button1.href = `javascript:${result1.code}void(0);`;
   button1.classList.remove('hidden');
 
-  const result2 = await minify(fileContents[2], {sourceMap: true});
+  const result2 = await minify(responses[2], {sourceMap: false});
   const button2 = document.getElementById('scriptPlaintext') as HTMLAnchorElement;
   button2.href = `javascript:${result2.code}void(0);`;
   button2.classList.remove('hidden');
