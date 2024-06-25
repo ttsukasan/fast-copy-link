@@ -16,14 +16,22 @@ __tt.CopyLink = class {
     this.toast.style.fontFamily = 'Arial, sans-serif'
     this.toast.style.transition = 'opacity .3s ease-in'
     // ページタイトルとURLを取得
-    this.pageTitle = document.title
+    this.pageTitle = this.trimTitle()
     this.pageURL = window.location.href
     this.copyElement = null
     this.successMessage = ''
     this.selection = null
     // 後からハンドラーを削除できるようにするために、メソッドをバインドしておく
     this.copyUsingClipboardAPIHandler = this.copyUsingClipboardAPIHandler.bind(this)
+  }
 
+  trimTitle() {
+    let title = document.title
+    title = title.replace(/(\| 課題の表示 )?\| Backlog$/, '')
+    title = title.replace(/^\[(.*?)\]/, ' $1 ')
+    title = title.replace(/\s{2,}/g, ' ')
+    title = title.trim()
+    return title
   }
 
   updateToast(message, color = 'default') {
