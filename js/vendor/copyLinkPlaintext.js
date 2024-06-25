@@ -16,7 +16,7 @@ __tt.CopyLink = class {
     this.toast.style.fontFamily = 'Arial, sans-serif'
     this.toast.style.transition = 'opacity .3s ease-in'
     // ページタイトルとURLを取得
-    this.pageTitle = this.trimTitle()
+    this.pageTitle = this.trimTitle(document.title)
     this.pageURL = window.location.href
     this.copyElement = null
     this.successMessage = ''
@@ -25,13 +25,12 @@ __tt.CopyLink = class {
     this.copyUsingClipboardAPIHandler = this.copyUsingClipboardAPIHandler.bind(this)
   }
 
-  trimTitle() {
-    let title = document.title
-    title = title.replace(/(\| 課題の表示 )?\| Backlog$/, '')
-    title = title.replace(/^\[(.*?)\]/, ' $1 ')
-    title = title.replace(/\s{2,}/g, ' ')
-    title = title.trim()
-    return title
+  trimTitle(title) {
+    return title.replace(/(\| 課題の表示 )?\| Backlog$/, '')
+      .replace(/-\s[a-zA-Z0-9-]+\.esa\.io$/, '')
+      .replace(/^\[(.*?)\]/, ' $1 ')
+      .replace(/\s{2,}/g, ' ')
+      .trim()
   }
 
   updateToast(message, color = 'default') {
@@ -54,17 +53,18 @@ __tt.CopyLink = class {
   }
 
   resetStyle(el) {
-    el.style.color = 'initial'
-    el.style.textDecoration = 'initial'
-    el.style.fontFamily = 'initial'
-    el.style.fontSize = 'initial'
-    el.style.fontWeight = 'initial'
-    el.style.lineHeight = 'initial'
-    el.style.letterSpacing = 'initial'
-    el.style.textAlign = 'initial'
-    el.style.textTransform = 'initial'
-    el.style.textIndent = 'initial'
-    el.style.backgroundColor = 'initial'
+    let i = 'initial'
+    el.style.color = i
+    el.style.textDecoration = i
+    el.style.fontFamily = i
+    el.style.fontSize = i
+    el.style.fontWeight = i
+    el.style.lineHeight = i
+    el.style.letterSpacing = i
+    el.style.textAlign = i
+    el.style.textTransform = i
+    el.style.textIndent = i
+    el.style.backgroundColor = i
   }
 
   selectTempDiv() {
@@ -105,7 +105,7 @@ __tt.CopyLink = class {
       this.showToast()
       this.hideToast()
     } catch (err) {
-      console.warn('Failed to copy text using getSelection: ', err)
+      console.warn('Failed to copy text using getSelection', err)
       throw err
     } finally {
       if (dom && dom.parentNode) {
@@ -123,7 +123,7 @@ __tt.CopyLink = class {
     if (this.type === 'textHtml') {
       clipboardItem = new ClipboardItem({
         'text/html': new Blob([this.copyElement.outerHTML], {type: 'text/html'}),
-        'text/plain': new Blob([`[${this.pageTitle}](${this.pageURL})`], {type: 'text/plain'}),
+        'text/plain': new Blob([this.copyElement.textContent], {type: 'text/plain'}),
       })
     }
     if (navigator.clipboard && navigator.clipboard.write) {
@@ -131,10 +131,10 @@ __tt.CopyLink = class {
         this.updateToast(this.successMessage)
         this.hideToast()
       }).catch((error) => {
-        console.error('Failed to copy text using Clipboard API: ', error)
+        console.error('Failed to copy text', error)
       })
     } else {
-      console.warn('Clipboard API is not supported')
+      console.error('Clipboard not supported')
     }
   }
 
