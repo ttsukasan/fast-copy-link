@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fast Link Copy</title>
+  <title>Fast Copy Link</title>
   <link rel="stylesheet" href="css/style.css">
   <meta name="description" content="">
 
@@ -27,29 +27,60 @@
 <div class="container">
   <nav class="nav">
     <div class="nav-left">
-      <a class="brand" href="#">Fast Link Copy</a>
+      <a class="brand" href="#">Fast Copy Link</a>
     </div>
     <div class="nav-right">
       <a class="button clear" href="https://github.com/ttsukasan/fast-copy-link">GitHub</a>
     </div>
   </nav>
   <main>
-    <div class="row">
-      <div class="col">
-        <h4>ページタイトルとURLをコピーするブックマークレット</h4>
-        <p>
-          <a id="scriptTextHtml" class="button outline hidden">🔗 HyperLink</a>
-          リッチテキスト形式でコピーします
-        </p>
-        <p>
-          <a id="scriptMarkdown" class="button outline hidden">Markdown</a>
-          Markdown形式でコピーします
-        </p>
-        <p>
-          <a id="scriptPlaintext" class="button outline hidden">plaintext</a>
-          プレーンテキスト形式でコピーします
-        </p>
+    <h4>ページタイトルとURLをコピー</h4>
+    <div class="mb-5">
+      <div>
+        するブックマークレットです。<br>ボタンをブックマークバーにドラッグ＆ドロップしてご利用ください。
       </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-2-md">
+        <a id="scriptTextHtml" class="button outline hidden is-full-width">📋 Link</a><br>
+      </div>
+      <div class="col-10-md">
+        リッチテキスト形式でコピーします。(例:&nbsp;<a href="https://www.digital.go.jp/">デジタル庁</a>)<br>
+        SlackやGoogleドキュメントへの貼り付けに利用します。<br>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-2-md">
+        <a id="scriptMarkdown" class="button outline hidden is-full-width">📋 markdown</a>
+      </div>
+      <div class="col-10-md">
+        Markdown形式でコピーします。(例:&nbsp;<code>[デジタル庁](https://www.digital.go.jp/)</code>)<br>
+        GitHubやBacklogの貼り付けに利用します。<br>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-2-md">
+        <a id="scriptPlaintext" class="button outline hidden is-full-width">📋 plaintext</a>
+      </div>
+      <div class="col-10-md">
+        プレーンテキスト形式でコピーします。(例:&nbsp;<code>デジタル庁 - https://www.digital.go.jp/</code>)<br>
+      </div>
+    </div>
+    <hr>
+    <div>
+      <h4>注意事項</h4>
+      <div>自分用なので、使用するサイトによって特殊な挙動があります。</div>
+      <ul>
+        <li>ページタイトル先頭が <code>[</code> で始まる場合、対応する <code>]</code>と共にスペースに置き換えます。</li>
+        <li>ページタイトル末尾の <code>| 課題の表示 | Backlog</code>,<code>| Backlog</code> を除去します。</li>
+        <li>ページタイトル末尾の <code>- xxxxxx.esa.io</code> を除去します。</li>
+        <li>ページタイトルの両端の空白は除去します。また、2文字以上連続した空白は1文字に置き換えます。</li>
+      </ul>
+      <p>
+        一部のサイトではセキュリティ都合のため、コピーのためにページ内のクリックが必要となります。<br>
+        メッセージが表されたら、ページ内のどこかをクリックしてください。
+      </p>
+      <img width="410" class="bd-light" src="./img/require-trusted-html.png">
     </div>
   </main>
 </div>
