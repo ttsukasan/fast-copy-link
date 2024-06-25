@@ -1,4 +1,6 @@
-# fast-copy-link
+# ページタイトルとURLをコピーするブックマークレット
+
+fast-copy-link
 
 https://ttsukasan.github.io/fast-copy-link/
 
