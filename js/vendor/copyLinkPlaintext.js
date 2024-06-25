@@ -97,7 +97,7 @@ __tt.CopyLink = class {
   copyUsingGetSelection() {
     var dom
     try {
-      if (this.type === 'textHtml') {
+      if (this.type === 'rt') {
         dom = this.selectTempDiv()
       } else {
         dom = this.selectTextarea()
@@ -120,7 +120,7 @@ __tt.CopyLink = class {
       'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),
     })
 
-    if (this.type === 'textHtml') {
+    if (this.type === 'rt') {
       clipboardItem = new ClipboardItem({
         'text/html': new Blob([this.copyElement.outerHTML], {type: 'text/html'}),
         'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),
@@ -139,9 +139,9 @@ __tt.CopyLink = class {
 
   textContent() {
     return {
-      textHtml: this.pageTitle,
-      plain: `${this.pageTitle} - ${this.pageURL}`,
-      markdown: `[${this.pageTitle}](${this.pageURL})`,
+      rt: this.pageTitle,
+      pt: `${this.pageTitle} - ${this.pageURL}`,
+      md: `[${this.pageTitle}](${this.pageURL})`,
     }[this.type]
   }
 
@@ -151,7 +151,7 @@ __tt.CopyLink = class {
   }
 
   exec() {
-    if (this.type === 'textHtml') {
+    if (this.type === 'rt') {
       this.copyElement = document.createElement('a')
       this.copyElement.href = this.pageURL
     } else {
@@ -168,18 +168,6 @@ __tt.CopyLink = class {
       this.drawToast('⚠️ ページ内をクリックしてコピーを完了します。', false, 'warn')
     }
   }
-
-  static textHtml() {
-    new __tt.CopyLink('textHtml').exec()
-  }
-
-  static plain() {
-    new __tt.CopyLink('plain').exec()
-  }
-
-  static markdown() {
-    new __tt.CopyLink('markdown').exec()
-  }
 }
 
-__tt.CopyLink.plain()
+new __tt.CopyLink('pt').exec()
