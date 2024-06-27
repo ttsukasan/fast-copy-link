@@ -8,18 +8,21 @@ const fileUrls = [
   "js/vendor/copyLinkPlaintext.js"
 ].map(path => `${window.location.pathname}${path}`);
 
-async function applyScript(fileResponse: Awaited<string>, el: HTMLAnchorElement) {
+async function applyScript(fileResponse: Awaited<string>, selector: string) {
+  const elList = document.querySelectorAll(selector) as NodeListOf<HTMLAnchorElement>;
   const minified = await minify(fileResponse, {sourceMap: false});
-  el.href = `javascript:${minified.code}void(0);`;
-  el.classList.remove('hidden');
+  elList.forEach(el  => {
+    el.href = `javascript:${minified.code}void(0);`
+    el.classList.remove('hidden')
+  })
 }
 
 Promise.all(fileUrls.map(url =>
   fetch(url).then(response => response.text())
 )).then(async responses => {
-  await applyScript(responses[0], document.getElementById('scriptTextHtml') as HTMLAnchorElement);
-  await applyScript(responses[1], document.getElementById('scriptMarkdown') as HTMLAnchorElement);
-  await applyScript(responses[2], document.getElementById('scriptPlaintext') as HTMLAnchorElement);
+  await applyScript(responses[0], '.script-text-html');
+  await applyScript(responses[1], '.script-markdown');
+  await applyScript(responses[2], '.script-plaintext');
 }).catch(error => {
   console.error('ファイルを読み込めませんでした。', error);
 });
