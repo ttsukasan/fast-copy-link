@@ -88,6 +88,35 @@ textarea {
   margin-bottom: 3rem;
 }
 
+.mb-10 {
+  margin-bottom: 6rem;
+}
+
+.mb-15 {
+  margin-bottom: 9rem;
+}
+
+.mb-20 {
+  margin-bottom: 12rem;
+}
+
+.mb-30 {
+  margin-bottom: 18rem;
+}
+
+.mb-40 {
+  margin-bottom: 24rem;
+}
+
+.h-20 {
+  height: 12rem;
+}
+
+a.button.large {
+  font-size: 2.25rem;
+  padding: 1.5rem 6rem;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
