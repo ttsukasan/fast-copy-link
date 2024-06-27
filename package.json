@@ -1,13 +1,13 @@
 {
-  "name": " ",
+  "name": "fast-copy-link",
   "version": "0.0.1",
-  "description": "",
+  "description": "Webページのリンクをコピーするブックマークレット",
   "private": true,
   "keywords": [
     ""
   ],
   "license": "",
-  "author": "",
+  "author": "ttsukasan",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open --config webpack.config.dev.js",
