@@ -23,6 +23,7 @@ __tt.CopyLink = class {
 
   initToast() {
     const toast = document.createElement('div')
+    this.resetStyle(toast)
     toast.style.position = 'fixed'
     toast.style.top = '10px'
     toast.style.left = '10px'
