@@ -68,12 +68,13 @@
       <h4>バリエーション</h4>
       <div>
         リッチテキスト形式(上のものと同じ)、Markdown形式、プレーンテキスト形式の3種類から選べます。<br>
+        ボタンをドラッグ＆ドロップしてブックマークバーに登録してください。
       </div>
     </div>
     <div class="mb-15">
       <div class="row mb-5">
         <div class="col-2-md">
-          <a class="button outline hidden is-full-width script-text-html">📋 Link</a><br>
+          <a class="button outline primary hidden is-full-width script-text-html">📋 Link</a><br>
         </div>
         <div class="col-10-md">
           リッチテキスト形式でコピーします。(例:&nbsp;<a href="https://www.digital.go.jp/">デジタル庁</a>)<br>
@@ -82,7 +83,7 @@
       </div>
       <div class="row mb-5">
         <div class="col-2-md">
-          <a class="button outline hidden is-full-width script-markdown">📋 markdown</a>
+          <a class="button outline primary hidden is-full-width script-markdown">📋 markdown</a>
         </div>
         <div class="col-10-md">
           Markdown形式でコピーします。(例:&nbsp;<code>[デジタル庁](https://www.digital.go.jp/)</code>)<br>
@@ -91,7 +92,7 @@
       </div>
       <div class="row mb-5">
         <div class="col-2-md">
-          <a class="button outline hidden is-full-width script-plaintext">📋 plaintext</a>
+          <a class="button outline primary hidden is-full-width script-plaintext">📋 plaintext</a>
         </div>
         <div class="col-10-md">
           プレーンテキスト形式でコピーします。(例:&nbsp;<code>デジタル庁 - https://www.digital.go.jp/</code>)<br>
@@ -117,27 +118,29 @@
       </div>
       <details class="mb-5">
         <summary>この仕様について技術的な話</summary>
-        <p>
-          このブックマークレットね、
-          <a href="https://developer.mozilla.org/ja/docs/Web/API/Window/getSelection">getSelection()</a>
-          を使ってクリップボードにコピーするんだけど、<br>
-          一部のサイトじゃ
-          <a href="https://www.w3.org/TR/trusted-types/">Trusted HTML</a>
-          の制約ってやつで、この関数がうまくいかないのよ。<br>
-          その時は
-          <a href="https://developer.mozilla.org/ja/docs/Web/API/Clipboard/write">Clipboard API</a>
-          を使うんだけど、これがね、ページがフォーカスされてないとダメなのよ。<br>
-          getSelection() が失敗した場合に、上記のメッセージを表示して、ページ内のクリックを待って、<br>
-          その後で Clipboard API を使ってコピーするって流れなの。
-        </p>
-        <p>
-          最初から Clipboard API を使うって手もあるわよ。というか、Clipboard API は getSelection() よりも優秀なのよ。<br>
-          でもね、これは HTTPSでしか使えないし、一部のサイトじゃ使えないの。<br>
-          それに、画面クリックが必要になるから、ユーザビリティがちょっとね、落ちるのよ。
-        </p>
-        <p>
-          結局のところ、皆が少しでもストレスなく、幸せに使えるように工夫してるのよ。
-        </p>
+        <div class="text-grey">
+          <p>
+            このブックマークレットね、
+            <a href="https://developer.mozilla.org/ja/docs/Web/API/Window/getSelection">getSelection()</a>
+            を使ってクリップボードにコピーするんだけど、<br>
+            一部のサイトじゃ
+            <a href="https://www.w3.org/TR/trusted-types/">Trusted HTML</a>
+            の制約ってやつで、この関数がうまくいかないのよ。<br>
+            その時は
+            <a href="https://developer.mozilla.org/ja/docs/Web/API/Clipboard/write">Clipboard API</a>
+            を使うんだけど、これがね、ページがフォーカスされてないとダメなのよ。<br>
+            getSelection() が失敗した場合に、上記のメッセージを表示して、ページ内のクリックを待って、<br>
+            その後で Clipboard API を使ってコピーするって流れなの。
+          </p>
+          <p>
+            最初から Clipboard API を使うって手もあるわよ。というか、Clipboard API は getSelection() よりも優秀なのよ。<br>
+            でもね、これは HTTPSでしか使えないし、一部のサイトじゃ使えないの。<br>
+            それに、画面クリックが必要になるから、ユーザビリティがちょっとね、落ちるのよ。
+          </p>
+          <p>
+            結局のところ、皆が少しでもストレスなく、幸せに使えるように工夫してるのよ。
+          </p>
+        </div>
       </details>
     </div>
   </main>
