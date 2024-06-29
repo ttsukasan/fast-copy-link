@@ -22,7 +22,6 @@ module.exports = {
     ],
   },
   resolve: {
-    // 拡張子を配列で指定
     extensions: [
       '.ts', '.js',
     ],
