@@ -3,7 +3,7 @@ export class CopyLink {
   toast: HTMLDivElement;
   pageTitle: string;
   pageURL: string;
-  copyElement: HTMLElement | HTMLAnchorElement | null;
+  anchorEl: HTMLAnchorElement;
   selection: Selection | null;
 
   constructor(type: string) {
@@ -12,7 +12,6 @@ export class CopyLink {
     // ページタイトルとURLを取得
     this.pageTitle = this.trimTitle(document.title);
     this.pageURL = window.location.href;
-    this.copyElement = null;
     this.selection = null;
     // 後からハンドラーを削除できるようにするために、メソッドをバインドしておく
     this.copyUsingClipboardAPIHandler = this.copyUsingClipboardAPIHandler.bind(this);
@@ -75,18 +74,20 @@ export class CopyLink {
     el.style.backgroundColor = i;
   }
 
+  // コピー用要素を作成（プレーンテキスト用）
   selectTempDiv(): HTMLDivElement {
     const div = document.createElement('div');
-    div.innerHTML = this.copyElement?.outerHTML || '';
+    div.innerHTML = this.anchorElement().outerHTML;
     document.body.appendChild(div);
     const range = document.createRange();
     range.selectNodeContents(div);
     this.selection = window.getSelection();
-    this.selection?.removeAllRanges();
-    this.selection?.addRange(range);
+    this.selection.removeAllRanges();
+    this.selection.addRange(range);
     return div;
   }
 
+  // コピー用テキストボックスを作成（プレーンテキスト用）
   selectTextarea(): HTMLTextAreaElement {
     const textarea = document.createElement('textarea');
     textarea.value = this.textContent();
@@ -127,7 +128,7 @@ export class CopyLink {
 
     if (this.type === 'rt') {
       cItem = new ClipboardItem({
-        'text/html': new Blob([this.copyElement?.outerHTML || ''], {type: 'text/html'}),
+        'text/html': new Blob([this.anchorElement().outerHTML], {type: 'text/html'}),
         'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),
       });
     } else {
@@ -158,16 +159,18 @@ export class CopyLink {
     this.copyUsingClipboardAPI();
   }
 
-  exec(): void {
-    if (this.type === 'rt') {
-      this.copyElement = document.createElement('a');
-      this.copyElement.href = this.pageURL;
-    } else {
-      this.copyElement = document.createElement('div');
+  // リンクタグを作成
+  anchorElement(): HTMLAnchorElement {
+    if (!this.anchorEl) {
+      this.anchorEl = document.createElement('a');
+      this.anchorEl.href = this.pageURL;
+      this.anchorEl.textContent = this.textContent();
+      this.resetStyle(this.anchorEl);
     }
-    this.copyElement.textContent = this.textContent();
-    this.resetStyle(this.copyElement);
+    return this.anchorEl
+  }
 
+  exec(): void {
     try {
       this.copyUsingGetSelection();
     } catch (e) {
