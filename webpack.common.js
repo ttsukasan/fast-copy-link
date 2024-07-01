@@ -17,6 +17,7 @@ module.exports = {
       },
       {
         test: /\.ts$/,
+        include: path.resolve(__dirname, 'js'),
         use: 'ts-loader',
       },
     ],
