@@ -3,9 +3,8 @@ export class CopyLink {
   toast: HTMLDivElement;
   pageTitle: string;
   pageURL: string;
-  copyElement: HTMLElement | null;
+  copyElement: HTMLElement | HTMLAnchorElement | null;
   selection: Selection | null;
-  copyUsingClipboardAPIHandler: () => void;
 
   constructor(type: string) {
     this.type = type;
@@ -36,14 +35,14 @@ export class CopyLink {
     toast.style.backgroundColor = '#292d3e';
     toast.style.padding = '10px';
     toast.style.borderRadius = '5px';
-    toast.style.zIndex = '10000';
+    toast.style.zIndex = `${Number.MAX_SAFE_INTEGER}`;
     toast.style.fontFamily = 'Arial, sans-serif';
     toast.style.transition = 'opacity .3s ease-in';
     return toast;
   }
 
   drawToast(message: string, isAutoRemove: boolean, color: 'default' | 'warn' | 'error' = 'default'): void {
-    this.toast.style.color = { 'default': '#d0d0d0', 'warn': '#ffcb6b', 'error': '#f07178' }[color];
+    this.toast.style.color = {'default': '#d0d0d0', 'warn': '#ffcb6b', 'error': '#f07178'}[color];
     this.toast.textContent = message;
     this.toast.style.opacity = '1';
     if (!this.toast.parentNode) {
@@ -78,7 +77,6 @@ export class CopyLink {
 
   selectTempDiv(): HTMLDivElement {
     const div = document.createElement('div');
-    div.contentEditable = 'true';
     div.innerHTML = this.copyElement?.outerHTML || '';
     document.body.appendChild(div);
     const range = document.createRange();
@@ -112,7 +110,7 @@ export class CopyLink {
         dom = this.selectTextarea();
       }
       this.execCopyCommand();
-      this.drawToast(`コピーしました: ${this.textContent()}`, true);
+      this.drawToast(`📋 コピーしました: ${this.textContent()}`, true);
     } catch (err) {
       console.warn('Failed to copy text using getSelection', err);
       throw err;
@@ -125,20 +123,20 @@ export class CopyLink {
   }
 
   copyUsingClipboardAPI(): void {
-    let clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([this.textContent()], { type: 'text/plain' }),
-    });
+    let cItem: ClipboardItem
 
     if (this.type === 'rt') {
-      clipboardItem = new ClipboardItem({
-        'text/html': new Blob([this.copyElement?.outerHTML || ''], { type: 'text/html' }),
-        'text/plain': new Blob([this.textContent()], { type: 'text/plain' }),
+      cItem = new ClipboardItem({
+        'text/html': new Blob([this.copyElement?.outerHTML || ''], {type: 'text/html'}),
+        'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),
       });
+    } else {
+      cItem = new ClipboardItem({'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),});
     }
 
     if (navigator.clipboard && navigator.clipboard.write) {
-      navigator.clipboard.write([clipboardItem]).then(() => {
-        this.drawToast(`コピーしました: ${this.textContent()}`, true);
+      navigator.clipboard.write([cItem]).then(() => {
+        this.drawToast(`📋 コピーしました: ${this.textContent()}`, true);
       }).catch((error) => {
         console.error('Failed to copy text', error);
       });
@@ -165,7 +163,7 @@ export class CopyLink {
       this.copyElement = document.createElement('a');
       this.copyElement.href = this.pageURL;
     } else {
-      this.copyElement = document.createElement('span');
+      this.copyElement = document.createElement('div');
     }
     this.copyElement.textContent = this.textContent();
     this.resetStyle(this.copyElement);
