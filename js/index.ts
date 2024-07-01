@@ -3,15 +3,15 @@ import {minify} from 'terser';
 // jsをテキストとして取得
 // github pagesではbase pathが変わることを考慮している TODO: 環境変数にしたい
 const fileUrls = [
-  "js/vendor/copyLinkTextHtml.js",
-  "js/vendor/copyLinkMarkdown.js",
-  "js/vendor/copyLinkPlaintext.js"
+  "js/vendor/minified/copyLinkTextHtml.js",
+  "js/vendor/minified/copyLinkMarkdown.js",
+  "js/vendor/minified/copyLinkPlaintext.js"
 ].map(path => `${window.location.pathname}${path}`);
 
 async function applyScript(fileResponse: Awaited<string>, selector: string) {
   const elList = document.querySelectorAll(selector) as NodeListOf<HTMLAnchorElement>;
   const minified = await minify(fileResponse, {sourceMap: false});
-  elList.forEach(el  => {
+  elList.forEach(el => {
     el.href = `javascript:${minified.code}void(0);`
     el.classList.remove('hidden')
   })

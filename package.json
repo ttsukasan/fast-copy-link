@@ -9,13 +9,16 @@
   "license": "",
   "author": "ttsukasan",
   "scripts": {
+    "build:lib": "esbuild ./lib/*.ts --bundle --minify --outdir=js/vendor/minified",
+    "watch:lib": "chokidar './lib/*.ts' -c 'npm run build:lib'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open --config webpack.config.dev.js",
-    "build": "webpack --config webpack.config.prod.js"
+    "build": "npm run build:lib && webpack --config webpack.config.prod.js"
   },
   "devDependencies": {
     "@types/terser": "^3.12.0",
     "copy-webpack-plugin": "^11.0.0",
+    "esbuild": "^0.21.5",
     "html-webpack-plugin": "^5.6.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.5.2",

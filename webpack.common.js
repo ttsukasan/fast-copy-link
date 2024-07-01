@@ -17,12 +17,12 @@ module.exports = {
       },
       {
         test: /\.ts$/,
+        include: path.resolve(__dirname, 'js'),
         use: 'ts-loader',
       },
     ],
   },
   resolve: {
-    // 拡張子を配列で指定
     extensions: [
       '.ts', '.js',
     ],
