@@ -62,25 +62,33 @@ export class CopyLink {
   }
 
   drawMenu(): void {
-    this.toast.innerHTML = [
-      `<div>コピー形式を選択してください。</div>`,
-      `<div class="__tt_fcl_btn" data-type="rt">ハイパーリンク ▶︎ <u>ページタイトル</u></div>`,
-      `<div class="__tt_fcl_btn" data-type="md">︎Markdown ▶︎ [ページタイトル](URL)</div>`,
-      `<div class="__tt_fcl_btn" data-type="pt">テキスト ▶︎ ページタイトル - URL</div>`].join('');
-    Array.from(this.toast.children).forEach((e, index) => {
-      let row = e as HTMLElement
-      this.resetStyle(row)
-      row.style.color = '#fffefe';
-      if (index !== 0) {
-        row.style.cursor = 'pointer'
-        row.style.border = '1px solid #ABB2BF'
-        row.style.borderRadius = '5px'
-        row.style.padding = '5px 15px'
-      }
-      if (index !== 3) {
-        row.style.marginBottom = `15px`
-      }
-    })
+    this.drawToast("コピー形式を選択してください。", false)
+    this.toast.appendChild(this.createButtonDiv('rt', 'ハイパーリンク ▶︎ ', 'ページタイトル'))
+    this.toast.appendChild(this.createButtonDiv('md', 'Markdown ▶︎ [ページタイトル](URL)'))
+    this.toast.appendChild(this.createButtonDiv('pt', 'テキスト ▶︎ ページタイトル - URL'))
+  }
+
+  createButtonDiv(type: string, text: string, underlineText: string = '') {
+    const btn = document.createElement('div');
+    btn.className = '__tt_fcl_btn';
+    btn.dataset.type = type;
+    btn.textContent = text;
+    btn.style.color = '#fffefe';
+    btn.style.cursor = 'pointer'
+    btn.style.border = '1px solid #ABB2BF'
+    btn.style.borderRadius = '5px'
+    btn.style.padding = '5px 15px'
+    btn.style.marginTop = `15px` // 好きじゃない
+
+    if (underlineText) {
+      const underline = document.createElement('span');
+      this.resetStyle(underline)
+      underline.style.textDecoration = 'underline'
+      underline.style.color = '#fffefe';
+      underline.textContent = 'ページタイトル'
+      btn.appendChild(underline)
+    }
+    return btn
   }
 
   drawToast(message: string, isAutoRemove: boolean): void {
@@ -150,8 +158,8 @@ export class CopyLink {
   textContent(): string {
     return {
       rt: this.pageTitle,
-      pt: `${this.pageTitle} - ${this.pageURL}`,
       md: `[${this.pageTitle}](${this.pageURL})`,
+      pt: `${this.pageTitle} - ${this.pageURL}`,
     }[this.type];
   }
 }
