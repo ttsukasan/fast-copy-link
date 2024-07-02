@@ -4,36 +4,25 @@ export class CopyLink {
   pageTitle: string
   pageURL: string
   anchorEl: HTMLAnchorElement
-  colors: object
+  // Gogh color
+  colors: { txt: string, bg: string, gray: string } = {txt: '#FFFEFE', bg: '#292D3E', gray: '#ABB2BF'}
 
   mount() {
     if (document.getElementById('__tt_fcl')?.dataset.active) {
       return false
     }
 
-    // ページタイトルとURLを取得
     this.pageTitle = this.trimTitle(document.title)
     this.pageURL = window.location.href
-    // Gogh color
-    this.colors = {txt: '#FFFEFE', bg: '#292D3E', gray: '#ABB2BF'}
-    // トースト、メニューの描画
-    this.initToast()
+
+    this.toast = this.initToast()
     this.drawMenu()
+
     if (!this.toast.parentNode) {
       document.body.appendChild(this.toast)
     }
-    // クリックイベントの作成
-    Array.from(document.getElementsByClassName('__tt_fcl_btn')).forEach(el => {
-      el.addEventListener('click', (ev) => {
-        // type rt/md/pt
-        this.type = (el as HTMLElement).dataset.type
-        try {
-          this.copyUsingClipboardAPI()
-        } catch (e) {
-          this.drawToast('⚠️ コピーに失敗しました。', true)
-        }
-      })
-    })
+
+    this.addClickEvents()
   }
 
   trimTitle(title: string): string {
@@ -46,22 +35,22 @@ export class CopyLink {
 
   initToast(): HTMLDivElement {
     document.getElementById("__tt_fcl")?.remove()
-    this.toast = document.createElement('div')
-    this.resetStyle(this.toast)
-    this.toast.id = '__tt_fcl'
-    this.toast.style.position = 'fixed'
-    this.toast.style.top = '10px'
-    this.toast.style.left = '10px'
-    this.toast.style.backgroundColor = this.colors.bg
-    this.toast.style.padding = '15px'
-    this.toast.style.borderRadius = '5px'
-    this.toast.style.zIndex = `${Number.MAX_SAFE_INTEGER}`
-    this.toast.style.fontFamily = 'Arial, sans-serif'
-    this.toast.style.transition = 'opacity .3s ease-in'
-    this.toast.style.color = this.colors.txt
-    this.toast.style.opacity = '1'
-    this.toast.dataset.active = "1"
-    return this.toast
+    const toast = document.createElement('div')
+    this.resetStyle(toast)
+    toast.id = '__tt_fcl'
+    toast.style.position = 'fixed'
+    toast.style.top = '10px'
+    toast.style.left = '10px'
+    toast.style.backgroundColor = this.colors.bg
+    toast.style.padding = '15px'
+    toast.style.borderRadius = '5px'
+    toast.style.zIndex = `${Number.MAX_SAFE_INTEGER}`
+    toast.style.fontFamily = 'Arial, sans-serif'
+    toast.style.transition = 'opacity .3s ease-in'
+    toast.style.color = this.colors.txt
+    toast.style.opacity = '1'
+    toast.dataset.active = "1"
+    return toast
   }
 
   drawMenu(): void {
@@ -81,14 +70,14 @@ export class CopyLink {
     btn.style.border = `1px solid ${this.colors.gray}`
     btn.style.borderRadius = '5px'
     btn.style.padding = '5px 15px'
-    btn.style.marginTop = `15px` // 好きじゃない
+    btn.style.marginTop = `15px`
 
     if (underlineText) {
       const underline = document.createElement('span')
       this.resetStyle(underline)
       underline.style.textDecoration = 'underline'
       underline.style.color = this.colors.txt
-      underline.textContent = 'ページタイトル'
+      underline.textContent = underlineText
       btn.appendChild(underline)
     }
     return btn
@@ -128,6 +117,19 @@ export class CopyLink {
     el.style.backgroundColor = i
   }
 
+  addClickEvents(): void {
+    Array.from(document.getElementsByClassName('__tt_fcl_btn')).forEach(el => {
+      el.addEventListener('click', (ev) => {
+        this.type = (el as HTMLElement).dataset.type
+        try {
+          this.copyUsingClipboardAPI()
+        } catch (e) {
+          this.drawToast('⚠️ コピーに失敗しました。', true)
+        }
+      })
+    })
+  }
+
   copyUsingClipboardAPI(): void {
     let cItem: ClipboardItem
 
@@ -147,7 +149,6 @@ export class CopyLink {
     })
   }
 
-  // リンクタグを作成
   anchorElement(): HTMLAnchorElement {
     if (!this.anchorEl) {
       this.anchorEl = document.createElement('a')
