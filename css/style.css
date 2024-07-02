@@ -108,6 +108,14 @@ textarea {
   margin-bottom: 24rem;
 }
 
+.mt-10 {
+  margin-top: 6rem;
+}
+
+.pt-10 {
+  padding-top: 6rem;
+}
+
 .h-20 {
   height: 12rem;
 }
@@ -205,9 +213,9 @@ a.button.large {
 }
 
 @media print,
-  (-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 1.25dppx),
-  (min-resolution: 120dpi) {
+(-webkit-min-device-pixel-ratio: 1.25),
+(min-resolution: 1.25dppx),
+(min-resolution: 120dpi) {
   /* Style adjustments for high resolution devices */
 }
 
