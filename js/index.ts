@@ -3,9 +3,11 @@ import {minify} from 'terser';
 // jsをテキストとして取得
 // github pagesではbase pathが変わることを考慮している TODO: 環境変数にしたい
 const fileUrls = [
-  "js/vendor/minified/copyLinkTextHtml.js",
-  "js/vendor/minified/copyLinkMarkdown.js",
-  "js/vendor/minified/copyLinkPlaintext.js"
+  "js/vendor/minified/copyLinkUI.js",
+  "js/vendor/minified/copyLinkUI.js",
+  "js/vendor/minified/copyLinkUI.js",
+  // "js/vendor/minified/copyLinkMarkdown.js",
+  // "js/vendor/minified/copyLinkPlaintext.js"
 ].map(path => `${window.location.pathname}${path}`);
 
 async function applyScript(fileResponse: Awaited<string>, selector: string) {

@@ -1,20 +1,39 @@
 export class CopyLink {
-  type: string;
-  toast: HTMLDivElement;
-  pageTitle: string;
-  pageURL: string;
-  anchorEl: HTMLAnchorElement;
-  selection: Selection | null;
+  type: string
+  toast: HTMLDivElement
+  pageTitle: string
+  pageURL: string
+  anchorEl: HTMLAnchorElement
+  selection: Selection | null
 
-  constructor(type: string) {
-    this.type = type;
-    this.toast = this.initToast();
+  mount() {
+    if (document.getElementById('__tt_fcl')?.dataset.active) {
+      return false;
+    }
+
     // ページタイトルとURLを取得
     this.pageTitle = this.trimTitle(document.title);
     this.pageURL = window.location.href;
     this.selection = null;
-    // 後からハンドラーを削除できるようにするために、メソッドをバインドしておく
-    this.copyUsingClipboardAPIHandler = this.copyUsingClipboardAPIHandler.bind(this);
+    // トースト、メニューの描画
+    this.initToast();
+    this.drawMenu();
+    if (!this.toast.parentNode) {
+      document.body.appendChild(this.toast);
+    }
+    // クリックイベントの作成
+    Array.from(document.getElementsByClassName('__tt_fcl_btn')).forEach(el => {
+      el.addEventListener('click', (ev) => {
+        // type rt/md/pt
+        this.type = (el as HTMLElement).dataset.type
+        try {
+          this.copyUsingClipboardAPI()
+        } catch (e) {
+          // Clipboard APIに失敗したら getSelectionも試してみる
+          this.copyUsingGetSelection()
+        }
+      })
+    })
   }
 
   trimTitle(title: string): string {
@@ -26,37 +45,64 @@ export class CopyLink {
   }
 
   initToast(): HTMLDivElement {
-    const toast = document.createElement('div');
-    this.resetStyle(toast);
-    toast.style.position = 'fixed';
-    toast.style.top = '10px';
-    toast.style.left = '10px';
-    toast.style.backgroundColor = '#292d3e';
-    toast.style.padding = '10px';
-    toast.style.borderRadius = '5px';
-    toast.style.zIndex = `${Number.MAX_SAFE_INTEGER}`;
-    toast.style.fontFamily = 'Arial, sans-serif';
-    toast.style.transition = 'opacity .3s ease-in';
-    return toast;
+    document.getElementById("__tt_fcl")?.remove()
+    this.toast = document.createElement('div')
+    this.resetStyle(this.toast)
+    this.toast.id = '__tt_fcl'
+    this.toast.style.position = 'fixed'
+    this.toast.style.top = '10px'
+    this.toast.style.left = '10px'
+    this.toast.style.backgroundColor = '#292d3e'
+    this.toast.style.padding = '15px'
+    this.toast.style.borderRadius = '5px'
+    this.toast.style.zIndex = `${Number.MAX_SAFE_INTEGER}`
+    this.toast.style.fontFamily = 'Arial, sans-serif'
+    this.toast.style.transition = 'opacity .3s ease-in'
+    this.toast.style.color = '#fffefe'
+    this.toast.style.opacity = '1';
+    this.toast.dataset.active = "1";
+    return this.toast
   }
 
-  drawToast(message: string, isAutoRemove: boolean, color: 'default' | 'warn' | 'error' = 'default'): void {
-    this.toast.style.color = {'default': '#d0d0d0', 'warn': '#ffcb6b', 'error': '#f07178'}[color];
+  drawMenu(): void {
+    this.toast.innerHTML = [
+      `<div>コピー形式を選択してください。</div>`,
+      `<div class="__tt_fcl_btn" data-type="rt">ハイパーリンク ▶︎ <u>ページタイトル</u></div>`,
+      `<div class="__tt_fcl_btn" data-type="md">︎Markdown ▶︎ [ページタイトル](URL)</div>`,
+      `<div class="__tt_fcl_btn" data-type="pt">テキスト ▶︎ ページタイトル - URL</div>`].join('');
+    Array.from(this.toast.children).forEach((e, index) => {
+      let row = e as HTMLElement
+      this.resetStyle(row)
+      row.style.color = '#fffefe';
+      if (index !== 0) {
+        row.style.cursor = 'pointer'
+        row.style.border = '1px solid #ABB2BF'
+        row.style.borderRadius = '5px'
+        row.style.padding = '5px 15px'
+      }
+      if (index !== 3) {
+        row.style.marginBottom = `15px`
+      }
+    })
+  }
+
+  drawToast(message: string, isAutoRemove: boolean): void {
     this.toast.textContent = message;
-    this.toast.style.opacity = '1';
-    if (!this.toast.parentNode) {
-      document.body.appendChild(this.toast);
-    }
     if (isAutoRemove) {
-      setTimeout(() => {
-        this.toast.style.opacity = '0';
-      }, 1500);
+      this.removeToast()
+    }
+  }
+
+  removeToast() {
+    this.toast.dataset.active = "";
+    setTimeout(() => {
+      this.toast.style.opacity = '0';
       setTimeout(() => {
         if (this.toast.parentNode) {
           document.body.removeChild(this.toast);
         }
-      }, 2000);
-    }
+      }, 500);
+    }, 1000);
   }
 
   resetStyle(el: HTMLElement): void {
@@ -74,7 +120,51 @@ export class CopyLink {
     el.style.backgroundColor = i;
   }
 
-  // コピー用要素を作成（プレーンテキスト用）
+  copyUsingClipboardAPI(): void {
+    let cItem: ClipboardItem
+
+    if (this.type === 'rt') {
+      cItem = new ClipboardItem({
+        'text/html': new Blob([this.anchorElement().outerHTML], {type: 'text/html'}),
+        'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),
+      });
+    } else {
+      cItem = new ClipboardItem({'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),});
+    }
+
+    if (navigator.clipboard && navigator.clipboard.write) {
+      navigator.clipboard.write([cItem]).then(() => {
+        this.drawToast(`📋 コピーしました: ${this.textContent()}`, true);
+      }).catch((err) => {
+        console.error('Failed to copy text', err)
+        throw err
+      });
+    } else {
+      console.error('Clipboard not supported')
+      throw Error('Clipboard not supported')
+    }
+  }
+
+  // リンクタグを作成
+  anchorElement(): HTMLAnchorElement {
+    if (!this.anchorEl) {
+      this.anchorEl = document.createElement('a');
+      this.anchorEl.href = this.pageURL;
+      this.anchorEl.textContent = this.textContent();
+      this.resetStyle(this.anchorEl);
+    }
+    return this.anchorEl
+  }
+
+  textContent(): string {
+    return {
+      rt: this.pageTitle,
+      pt: `${this.pageTitle} - ${this.pageURL}`,
+      md: `[${this.pageTitle}](${this.pageURL})`,
+    }[this.type];
+  }
+
+  // コピー用要素を作成（リッチテキスト用）
   selectTempDiv(): HTMLDivElement {
     const div = document.createElement('div');
     div.innerHTML = this.anchorElement().outerHTML;
@@ -123,60 +213,5 @@ export class CopyLink {
     }
   }
 
-  copyUsingClipboardAPI(): void {
-    let cItem: ClipboardItem
 
-    if (this.type === 'rt') {
-      cItem = new ClipboardItem({
-        'text/html': new Blob([this.anchorElement().outerHTML], {type: 'text/html'}),
-        'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),
-      });
-    } else {
-      cItem = new ClipboardItem({'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),});
-    }
-
-    if (navigator.clipboard && navigator.clipboard.write) {
-      navigator.clipboard.write([cItem]).then(() => {
-        this.drawToast(`📋 コピーしました: ${this.textContent()}`, true);
-      }).catch((error) => {
-        console.error('Failed to copy text', error);
-      });
-    } else {
-      console.error('Clipboard not supported');
-    }
-  }
-
-  textContent(): string {
-    return {
-      rt: this.pageTitle,
-      pt: `${this.pageTitle} - ${this.pageURL}`,
-      md: `[${this.pageTitle}](${this.pageURL})`,
-    }[this.type];
-  }
-
-  copyUsingClipboardAPIHandler(): void {
-    document.removeEventListener('click', this.copyUsingClipboardAPIHandler);
-    this.copyUsingClipboardAPI();
-  }
-
-  // リンクタグを作成
-  anchorElement(): HTMLAnchorElement {
-    if (!this.anchorEl) {
-      this.anchorEl = document.createElement('a');
-      this.anchorEl.href = this.pageURL;
-      this.anchorEl.textContent = this.textContent();
-      this.resetStyle(this.anchorEl);
-    }
-    return this.anchorEl
-  }
-
-  exec(): void {
-    try {
-      this.copyUsingGetSelection();
-    } catch (e) {
-      // getSelectionでコピーできない場合は、Clipboard APIを使う
-      document.addEventListener('click', this.copyUsingClipboardAPIHandler);
-      this.drawToast('⚠️ ページ内をクリックしてコピーを完了します。', false, 'warn');
-    }
-  }
 }
