@@ -34,7 +34,7 @@ export class CopyLink {
   }
 
   initToast(): HTMLDivElement {
-    document.getElementById("__tt_fcl")?.remove()
+    document.getElementById('__tt_fcl')?.remove()
     const toast = document.createElement('div')
     this.resetStyle(toast)
     toast.id = '__tt_fcl'
@@ -49,12 +49,12 @@ export class CopyLink {
     toast.style.transition = 'opacity .3s ease-in'
     toast.style.color = this.colors.txt
     toast.style.opacity = '1'
-    toast.dataset.active = "1"
+    toast.dataset.active = '1'
     return toast
   }
 
   drawMenu(): void {
-    this.drawToast("コピー形式を選択してください。", false)
+    this.drawToast('コピー形式を選択してください。', false)
     this.toast.appendChild(this.createButtonDiv('rt', 'ハイパーリンク ▶︎ ', 'ページタイトル'))
     this.toast.appendChild(this.createButtonDiv('md', 'Markdown ▶︎ [ページタイトル](URL)'))
     this.toast.appendChild(this.createButtonDiv('pt', 'テキスト ▶︎ ページタイトル - URL'))
@@ -91,7 +91,7 @@ export class CopyLink {
   }
 
   removeToast() {
-    this.toast.dataset.active = ""
+    this.toast.dataset.active = ''
     setTimeout(() => {
       this.toast.style.opacity = '0'
       setTimeout(() => {
