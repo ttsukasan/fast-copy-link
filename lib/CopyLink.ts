@@ -4,7 +4,6 @@ export class CopyLink {
   pageTitle: string
   pageURL: string
   anchorEl: HTMLAnchorElement
-  selection: Selection | null
 
   mount() {
     if (document.getElementById('__tt_fcl')?.dataset.active) {
@@ -14,7 +13,6 @@ export class CopyLink {
     // ページタイトルとURLを取得
     this.pageTitle = this.trimTitle(document.title);
     this.pageURL = window.location.href;
-    this.selection = null;
     // トースト、メニューの描画
     this.initToast();
     this.drawMenu();
@@ -29,8 +27,7 @@ export class CopyLink {
         try {
           this.copyUsingClipboardAPI()
         } catch (e) {
-          // Clipboard APIに失敗したら getSelectionも試してみる
-          this.copyUsingGetSelection()
+          this.drawToast('⚠️ コピーに失敗しました。', true)
         }
       })
     })
@@ -132,17 +129,11 @@ export class CopyLink {
       cItem = new ClipboardItem({'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),});
     }
 
-    if (navigator.clipboard && navigator.clipboard.write) {
-      navigator.clipboard.write([cItem]).then(() => {
-        this.drawToast(`📋 コピーしました: ${this.textContent()}`, true);
-      }).catch((err) => {
-        console.error('Failed to copy text', err)
-        throw err
-      });
-    } else {
-      console.error('Clipboard not supported')
-      throw Error('Clipboard not supported')
-    }
+    navigator.clipboard.write([cItem]).then(() => {
+      this.drawToast(`コピーしました: ${this.textContent()}`, true);
+    }).catch((err) => {
+      throw err
+    });
   }
 
   // リンクタグを作成
@@ -163,55 +154,4 @@ export class CopyLink {
       md: `[${this.pageTitle}](${this.pageURL})`,
     }[this.type];
   }
-
-  // コピー用要素を作成（リッチテキスト用）
-  selectTempDiv(): HTMLDivElement {
-    const div = document.createElement('div');
-    div.innerHTML = this.anchorElement().outerHTML;
-    document.body.appendChild(div);
-    const range = document.createRange();
-    range.selectNodeContents(div);
-    this.selection = window.getSelection();
-    this.selection.removeAllRanges();
-    this.selection.addRange(range);
-    return div;
-  }
-
-  // コピー用テキストボックスを作成（プレーンテキスト用）
-  selectTextarea(): HTMLTextAreaElement {
-    const textarea = document.createElement('textarea');
-    textarea.value = this.textContent();
-    document.body.appendChild(textarea);
-    textarea.select();
-    return textarea;
-  }
-
-  execCopyCommand(): void {
-    if (!document.execCommand('copy')) {
-      throw new Error('Failed execCommand');
-    }
-  }
-
-  copyUsingGetSelection(): void {
-    let dom: HTMLDivElement | HTMLTextAreaElement | undefined;
-    try {
-      if (this.type === 'rt') {
-        dom = this.selectTempDiv();
-      } else {
-        dom = this.selectTextarea();
-      }
-      this.execCopyCommand();
-      this.drawToast(`📋 コピーしました: ${this.textContent()}`, true);
-    } catch (err) {
-      console.warn('Failed to copy text using getSelection', err);
-      throw err;
-    } finally {
-      if (dom && dom.parentNode) {
-        dom.parentNode.removeChild(dom);
-      }
-      this.selection?.removeAllRanges();
-    }
-  }
-
-
 }
