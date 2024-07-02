@@ -4,6 +4,7 @@ export class CopyLink {
   pageTitle: string
   pageURL: string
   anchorEl: HTMLAnchorElement
+  colors: object
 
   mount() {
     if (document.getElementById('__tt_fcl')?.dataset.active) {
@@ -13,6 +14,8 @@ export class CopyLink {
     // ページタイトルとURLを取得
     this.pageTitle = this.trimTitle(document.title);
     this.pageURL = window.location.href;
+    // Gogh color
+    this.colors = {txt: '#FFFEFE', bg: '#292D3E', gray: '#ABB2BF'}
     // トースト、メニューの描画
     this.initToast();
     this.drawMenu();
@@ -49,7 +52,7 @@ export class CopyLink {
     this.toast.style.position = 'fixed'
     this.toast.style.top = '10px'
     this.toast.style.left = '10px'
-    this.toast.style.backgroundColor = '#292d3e'
+    this.toast.style.backgroundColor = this.colors.bg
     this.toast.style.padding = '15px'
     this.toast.style.borderRadius = '5px'
     this.toast.style.zIndex = `${Number.MAX_SAFE_INTEGER}`
@@ -73,9 +76,9 @@ export class CopyLink {
     btn.className = '__tt_fcl_btn';
     btn.dataset.type = type;
     btn.textContent = text;
-    btn.style.color = '#fffefe';
+    btn.style.color = this.colors.txt;
     btn.style.cursor = 'pointer'
-    btn.style.border = '1px solid #ABB2BF'
+    btn.style.border = `1px solid ${this.colors.gray}`
     btn.style.borderRadius = '5px'
     btn.style.padding = '5px 15px'
     btn.style.marginTop = `15px` // 好きじゃない
@@ -84,7 +87,7 @@ export class CopyLink {
       const underline = document.createElement('span');
       this.resetStyle(underline)
       underline.style.textDecoration = 'underline'
-      underline.style.color = '#fffefe';
+      underline.style.color = this.colors.txt;
       underline.textContent = 'ページタイトル'
       btn.appendChild(underline)
     }
