@@ -4,10 +4,6 @@ import {minify} from 'terser';
 // github pagesではbase pathが変わることを考慮している TODO: 環境変数にしたい
 const fileUrls = [
   "js/vendor/minified/copyLinkUI.js",
-  "js/vendor/minified/copyLinkUI.js",
-  "js/vendor/minified/copyLinkUI.js",
-  // "js/vendor/minified/copyLinkMarkdown.js",
-  // "js/vendor/minified/copyLinkPlaintext.js"
 ].map(path => `${window.location.pathname}${path}`);
 
 async function applyScript(fileResponse: Awaited<string>, selector: string) {
@@ -22,9 +18,7 @@ async function applyScript(fileResponse: Awaited<string>, selector: string) {
 Promise.all(fileUrls.map(url =>
   fetch(url).then(response => response.text())
 )).then(async responses => {
-  await applyScript(responses[0], '.script-text-html');
-  await applyScript(responses[1], '.script-markdown');
-  await applyScript(responses[2], '.script-plaintext');
+  await applyScript(responses[0], '.script-button');
 }).catch(error => {
   console.error('ファイルを読み込めませんでした。', error);
 });

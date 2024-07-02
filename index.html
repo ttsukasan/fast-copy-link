@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>リンク付きタイトルのコピーは任せろ</title>
+  <title>タイトルとURLをコピーするブックマークレット</title>
   <link rel="stylesheet" href="css/style.css">
   <meta name="description"
         content="リンクコピーが超簡単に！✨爆速で使える【神アプリ】登場！🎉「リンクコピーの革命」を体験しよう！このアプリは、ワンクリックでWebページのリンク付きタイトルを簡単にコピーできるスーパーツールです。🚀誰でも手軽に使える便利機能満載！初心者からプロまで、全てのリンクコピーを楽しく、そして効率的に！✨あなたの作業を劇的に効率化するこの「神アプリ」を今すぐ試してみてください！">
@@ -37,73 +37,45 @@
 </head>
 
 <body>
-
 <div class="container">
-  <nav class="nav h-20">
-    <div class="nav-left">
-      <a class="brand" href="#">リンク付きタイトルのコピーは任せろ</a>
-    </div>
-    <div class="nav-right">
-      <a class="button clear" href="https://github.com/ttsukasan/fast-copy-link">GitHub</a>
-    </div>
-  </nav>
   <main>
     <div class="mb-10">
-      <h3>Webページのリンクをコピーするブックマークレット</h3>
-    </div>
-    <div class="mb-10">
-      <a class="button outline primary hidden script-text-html large">📋 リンクをコピー</a><br>
-    </div>
-    <div class="mb-40">
-      <ol>
-        <li>上記のボタンをブックマークバーにドラッグ＆ドロップして登録してください。</li>
-        <li>リンクを取得したいページを開きます。</li>
-        <li>登録したブックマークレットをクリックすると、リンク付きのテキストがコピーされます。</li>
-      </ol>
-      <ul>
-        <li>コピーした後、Slackの入力欄に <code>Ctrl+V</code> で貼り付けると機能がわかりやすいと思います。</li>
-      </ul>
-    </div>
-    <hr class="mb-15">
-    <div class="mb-10">
-      <h4>バリエーション</h4>
-      <div>
-        リッチテキスト形式(上のものと同じ)、Markdown形式、プレーンテキスト形式の3種類から選べます。<br>
-        ボタンをドラッグ＆ドロップしてブックマークバーに登録してください。
-      </div>
+      <h3>タイトルとURLをコピーするブックマークレット</h3>
     </div>
     <div class="mb-15">
-      <div class="row mb-5">
-        <div class="col-2-md">
-          <a class="button outline primary hidden is-full-width script-text-html">📋 Link</a><br>
-        </div>
-        <div class="col-10-md">
-          リッチテキスト形式でコピーします。(例:&nbsp;<a href="https://www.digital.go.jp/">デジタル庁</a>)<br>
-          SlackやGoogleドキュメントへの貼り付けに利用します。<br>
-        </div>
-      </div>
-      <div class="row mb-5">
-        <div class="col-2-md">
-          <a class="button outline primary hidden is-full-width script-markdown">📋 markdown</a>
-        </div>
-        <div class="col-10-md">
-          Markdown形式でコピーします。(例:&nbsp;<code>[デジタル庁](https://www.digital.go.jp/)</code>)<br>
-          GitHubやBacklogの貼り付けに利用します。<br>
-        </div>
-      </div>
-      <div class="row mb-5">
-        <div class="col-2-md">
-          <a class="button outline primary hidden is-full-width script-plaintext">📋 plaintext</a>
-        </div>
-        <div class="col-10-md">
-          プレーンテキスト形式でコピーします。(例:&nbsp;<code>デジタル庁 - https://www.digital.go.jp/</code>)<br>
-        </div>
-      </div>
+      WebページのタイトルとURLを簡単にコピーできるブックマークレットツールです。<br/>
+      ワンクリックでクリップボードにコピーされ、他のドキュメントやアプリに素早く貼り付けが可能です。
+    </div>
+    <div class="mb-5">
+      <a class="button outline primary hidden script-button large">📋 リンクをコピー</a><br>
+    </div>
+    <div class="mb-5">
+      <ol>
+        <li>上のボタンをクリックせずに、ボタンの上にマウスカーソルを置きます。</li>
+        <li>マウスの左ボタンを押したまま、ブックマークバーにドラッグします。</li>
+        <li>ブックマークバーにドラッグしたら、マウスのボタンを離します。</li>
+      </ol>
+    </div>
+    <div class="mb-15">
+      これでブックマークレットがブックマークバーに登録されます。<br/>
+      登録後は、いつでもこのブックマークをクリックして、WebページのタイトルとURLを簡単にコピーすることができます。
+    </div>
+    <hr class="mb-15">
+    <div class="mb-20">
+      <h4 class="mb-5">使用方法</h4>
+      <p>実行すると、画面左上にダイアログが表示されます。</p>
+      <p>使用するコピー形式をクリックすることで、リンクがクリップボードにコピーされます。</p>
+    </div>
+    <div class="mb-40">
+      <h4 class="mb-5">コピー形式について</h4>
+      <p><strong>ハイパーリンク</strong> SlackやGoogleドキュメントへの貼り付けにオススメです。<br/></p>
+      <p><strong>Markdown</strong> GithubやBacklogなどのサービスで利用される形式です<br/></p>
+      <p><strong>テキスト形式</strong> シンプルにタイトルとURLをコピーします。</p>
     </div>
     <hr class="mb-15">
     <div class="mb-40">
       <h4>注意事項</h4>
-      <p>対応ブラウザ: Google Chrome</p>
+      <p>対応ブラウザ: Google Chrome, Safari （その他は未確認）</p>
       <div>自分用なので、使用するサイトによって特殊な挙動があります。</div>
       <ul>
         <li>ページタイトル先頭が <code>[</code> で始まる場合、対応する <code>]</code>と共にスペースに置き換えます。</li>
@@ -111,47 +83,13 @@
         <li>ページタイトル末尾の <code>- xxxxxx.esa.io</code> を除去します。</li>
         <li>ページタイトルの両端の空白は除去します。また、2文字以上連続した空白は1文字に置き換えます。</li>
       </ul>
-      <p>
-        一部のサイトではセキュリティ都合のため、コピーのためにページ内のクリックが必要となります。<br>
-        メッセージが表されたら、ページ内のどこかをクリックしてください。
-      </p>
-      <div class="mb-5">
-        <img width="410" class="bd-light" src="./img/require-trusted-html.png" alt="クリックが必要となる場合のメッセージ"/>
-      </div>
-      <details class="mb-5">
-        <summary>この仕様について技術的な話</summary>
-        <div class="text-grey">
-          <p>
-            このブックマークレットね、
-            <a href="https://developer.mozilla.org/ja/docs/Web/API/Window/getSelection">getSelection()</a>
-            を使ってクリップボードにコピーするんだけど、<br>
-            一部のサイトじゃ
-            <a href="https://www.w3.org/TR/trusted-types/">Trusted HTML</a>
-            の制約ってやつで、この関数がうまくいかないのよ。<br>
-            その時は
-            <a href="https://developer.mozilla.org/ja/docs/Web/API/Clipboard/write">Clipboard API</a>
-            を使うんだけど、これがね、ページがフォーカスされてないとダメなのよ。<br>
-            getSelection() が失敗した場合に、上記のメッセージを表示して、ページ内のクリックを待って、<br>
-            その後で Clipboard API を使ってコピーするって流れなの。
-          </p>
-          <p>
-            最初から Clipboard API を使うって手もあるわよ。というか、Clipboard API は getSelection() よりも優秀なのよ。<br>
-            でもね、これは HTTPSでしか使えないし、一部のサイトじゃ使えないの。<br>
-            それに、画面クリックが必要になるから、ユーザビリティがちょっとね、落ちるのよ。
-          </p>
-          <p>
-            結局のところ、皆が少しでもストレスなく、幸せに使えるように工夫してるのよ。
-          </p>
-        </div>
-      </details>
     </div>
   </main>
   <footer class="text-center mb-10">
-    2024 © <a href="https://x.com/ttsukasan">ttsukasan</a>
+    2024 <a class="button clear" href="https://x.com/ttsukasan">ttsukasan</a> - <a class="button clear" href="https://github.com/ttsukasan/fast-copy-link">GitHub</a>
   </footer>
 </div>
 <script src="js/app.js"></script>
-
 </body>
 
 </html>
