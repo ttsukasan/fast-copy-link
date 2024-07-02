@@ -1,20 +1,28 @@
 export class CopyLink {
-  type: string;
-  toast: HTMLDivElement;
-  pageTitle: string;
-  pageURL: string;
-  anchorEl: HTMLAnchorElement;
-  selection: Selection | null;
+  type: string
+  toast: HTMLDivElement
+  pageTitle: string
+  pageURL: string
+  anchorEl: HTMLAnchorElement
+  // Gogh color
+  colors: { txt: string, bg: string, gray: string } = {txt: '#FFFEFE', bg: '#292D3E', gray: '#ABB2BF'}
 
-  constructor(type: string) {
-    this.type = type;
-    this.toast = this.initToast();
-    // ページタイトルとURLを取得
-    this.pageTitle = this.trimTitle(document.title);
-    this.pageURL = window.location.href;
-    this.selection = null;
-    // 後からハンドラーを削除できるようにするために、メソッドをバインドしておく
-    this.copyUsingClipboardAPIHandler = this.copyUsingClipboardAPIHandler.bind(this);
+  mount() {
+    if (document.getElementById('__tt_fcl')?.dataset.active) {
+      return false
+    }
+
+    this.pageTitle = this.trimTitle(document.title)
+    this.pageURL = window.location.href
+
+    this.toast = this.initToast()
+    this.drawMenu()
+
+    if (!this.toast.parentNode) {
+      document.body.appendChild(this.toast)
+    }
+
+    this.addClickEvents()
   }
 
   trimTitle(title: string): string {
@@ -22,105 +30,104 @@ export class CopyLink {
       .replace(/-\s[a-zA-Z0-9-]+\.esa\.io$/, '')
       .replace(/^\[(.*?)\]/, ' $1 ')
       .replace(/\s{2,}/g, ' ')
-      .trim();
+      .trim()
   }
 
   initToast(): HTMLDivElement {
-    const toast = document.createElement('div');
-    this.resetStyle(toast);
-    toast.style.position = 'fixed';
-    toast.style.top = '10px';
-    toast.style.left = '10px';
-    toast.style.backgroundColor = '#292d3e';
-    toast.style.padding = '10px';
-    toast.style.borderRadius = '5px';
-    toast.style.zIndex = `${Number.MAX_SAFE_INTEGER}`;
-    toast.style.fontFamily = 'Arial, sans-serif';
-    toast.style.transition = 'opacity .3s ease-in';
-    return toast;
+    document.getElementById('__tt_fcl')?.remove()
+    const toast = document.createElement('div')
+    this.resetStyle(toast)
+    toast.id = '__tt_fcl'
+    toast.style.position = 'fixed'
+    toast.style.top = '10px'
+    toast.style.left = '10px'
+    toast.style.backgroundColor = this.colors.bg
+    toast.style.padding = '15px'
+    toast.style.borderRadius = '5px'
+    toast.style.zIndex = `${Number.MAX_SAFE_INTEGER}`
+    toast.style.fontFamily = 'Arial, sans-serif'
+    toast.style.transition = 'opacity .3s ease-in'
+    toast.style.color = this.colors.txt
+    toast.style.opacity = '1'
+    toast.dataset.active = '1'
+    return toast
   }
 
-  drawToast(message: string, isAutoRemove: boolean, color: 'default' | 'warn' | 'error' = 'default'): void {
-    this.toast.style.color = {'default': '#d0d0d0', 'warn': '#ffcb6b', 'error': '#f07178'}[color];
-    this.toast.textContent = message;
-    this.toast.style.opacity = '1';
-    if (!this.toast.parentNode) {
-      document.body.appendChild(this.toast);
+  drawMenu(): void {
+    this.drawToast('コピー形式を選択してください。', false)
+    this.toast.appendChild(this.createButtonDiv('rt', 'ハイパーリンク ▶︎ ', 'ページタイトル'))
+    this.toast.appendChild(this.createButtonDiv('md', 'Markdown ▶︎ [ページタイトル](URL)'))
+    this.toast.appendChild(this.createButtonDiv('pt', 'テキスト ▶︎ ページタイトル - URL'))
+  }
+
+  createButtonDiv(type: string, text: string, underlineText: string = '') {
+    const btn = document.createElement('div')
+    btn.className = '__tt_fcl_btn'
+    btn.dataset.type = type
+    btn.textContent = text
+    btn.style.color = this.colors.txt
+    btn.style.cursor = 'pointer'
+    btn.style.border = `1px solid ${this.colors.gray}`
+    btn.style.borderRadius = '5px'
+    btn.style.padding = '5px 15px'
+    btn.style.marginTop = `15px`
+
+    if (underlineText) {
+      const underline = document.createElement('span')
+      this.resetStyle(underline)
+      underline.style.textDecoration = 'underline'
+      underline.style.color = this.colors.txt
+      underline.textContent = underlineText
+      btn.appendChild(underline)
     }
+    return btn
+  }
+
+  drawToast(message: string, isAutoRemove: boolean): void {
+    this.toast.textContent = message
     if (isAutoRemove) {
-      setTimeout(() => {
-        this.toast.style.opacity = '0';
-      }, 1500);
+      this.removeToast()
+    }
+  }
+
+  removeToast() {
+    this.toast.dataset.active = ''
+    setTimeout(() => {
+      this.toast.style.opacity = '0'
       setTimeout(() => {
         if (this.toast.parentNode) {
-          document.body.removeChild(this.toast);
+          document.body.removeChild(this.toast)
         }
-      }, 2000);
-    }
+      }, 500)
+    }, 1000)
   }
 
   resetStyle(el: HTMLElement): void {
-    let i = 'initial';
-    el.style.color = i;
-    el.style.textDecoration = i;
-    el.style.fontFamily = i;
-    el.style.fontSize = i;
-    el.style.fontWeight = i;
-    el.style.lineHeight = i;
-    el.style.letterSpacing = i;
-    el.style.textAlign = i;
-    el.style.textTransform = i;
-    el.style.textIndent = i;
-    el.style.backgroundColor = i;
+    let i = 'initial'
+    el.style.color = i
+    el.style.textDecoration = i
+    el.style.fontFamily = i
+    el.style.fontSize = i
+    el.style.fontWeight = i
+    el.style.lineHeight = i
+    el.style.letterSpacing = i
+    el.style.textAlign = i
+    el.style.textTransform = i
+    el.style.textIndent = i
+    el.style.backgroundColor = i
   }
 
-  // コピー用要素を作成（プレーンテキスト用）
-  selectTempDiv(): HTMLDivElement {
-    const div = document.createElement('div');
-    div.innerHTML = this.anchorElement().outerHTML;
-    document.body.appendChild(div);
-    const range = document.createRange();
-    range.selectNodeContents(div);
-    this.selection = window.getSelection();
-    this.selection.removeAllRanges();
-    this.selection.addRange(range);
-    return div;
-  }
-
-  // コピー用テキストボックスを作成（プレーンテキスト用）
-  selectTextarea(): HTMLTextAreaElement {
-    const textarea = document.createElement('textarea');
-    textarea.value = this.textContent();
-    document.body.appendChild(textarea);
-    textarea.select();
-    return textarea;
-  }
-
-  execCopyCommand(): void {
-    if (!document.execCommand('copy')) {
-      throw new Error('Failed execCommand');
-    }
-  }
-
-  copyUsingGetSelection(): void {
-    let dom: HTMLDivElement | HTMLTextAreaElement | undefined;
-    try {
-      if (this.type === 'rt') {
-        dom = this.selectTempDiv();
-      } else {
-        dom = this.selectTextarea();
-      }
-      this.execCopyCommand();
-      this.drawToast(`📋 コピーしました: ${this.textContent()}`, true);
-    } catch (err) {
-      console.warn('Failed to copy text using getSelection', err);
-      throw err;
-    } finally {
-      if (dom && dom.parentNode) {
-        dom.parentNode.removeChild(dom);
-      }
-      this.selection?.removeAllRanges();
-    }
+  addClickEvents(): void {
+    Array.from(document.getElementsByClassName('__tt_fcl_btn')).forEach(el => {
+      el.addEventListener('click', (ev) => {
+        this.type = (el as HTMLElement).dataset.type
+        try {
+          this.copyUsingClipboardAPI()
+        } catch (e) {
+          this.drawToast('⚠️ コピーに失敗しました。', true)
+        }
+      })
+    })
   }
 
   copyUsingClipboardAPI(): void {
@@ -130,53 +137,33 @@ export class CopyLink {
       cItem = new ClipboardItem({
         'text/html': new Blob([this.anchorElement().outerHTML], {type: 'text/html'}),
         'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),
-      });
+      })
     } else {
-      cItem = new ClipboardItem({'text/plain': new Blob([this.textContent()], {type: 'text/plain'}),});
+      cItem = new ClipboardItem({'text/plain': new Blob([this.textContent()], {type: 'text/plain'})})
     }
 
-    if (navigator.clipboard && navigator.clipboard.write) {
-      navigator.clipboard.write([cItem]).then(() => {
-        this.drawToast(`📋 コピーしました: ${this.textContent()}`, true);
-      }).catch((error) => {
-        console.error('Failed to copy text', error);
-      });
-    } else {
-      console.error('Clipboard not supported');
+    navigator.clipboard.write([cItem]).then(() => {
+      this.drawToast(`コピーしました: ${this.textContent()}`, true)
+    }).catch((err) => {
+      throw err
+    })
+  }
+
+  anchorElement(): HTMLAnchorElement {
+    if (!this.anchorEl) {
+      this.anchorEl = document.createElement('a')
+      this.anchorEl.href = this.pageURL
+      this.anchorEl.textContent = this.textContent()
+      this.resetStyle(this.anchorEl)
     }
+    return this.anchorEl
   }
 
   textContent(): string {
     return {
       rt: this.pageTitle,
-      pt: `${this.pageTitle} - ${this.pageURL}`,
       md: `[${this.pageTitle}](${this.pageURL})`,
-    }[this.type];
-  }
-
-  copyUsingClipboardAPIHandler(): void {
-    document.removeEventListener('click', this.copyUsingClipboardAPIHandler);
-    this.copyUsingClipboardAPI();
-  }
-
-  // リンクタグを作成
-  anchorElement(): HTMLAnchorElement {
-    if (!this.anchorEl) {
-      this.anchorEl = document.createElement('a');
-      this.anchorEl.href = this.pageURL;
-      this.anchorEl.textContent = this.textContent();
-      this.resetStyle(this.anchorEl);
-    }
-    return this.anchorEl
-  }
-
-  exec(): void {
-    try {
-      this.copyUsingGetSelection();
-    } catch (e) {
-      // getSelectionでコピーできない場合は、Clipboard APIを使う
-      document.addEventListener('click', this.copyUsingClipboardAPIHandler);
-      this.drawToast('⚠️ ページ内をクリックしてコピーを完了します。', false, 'warn');
-    }
+      pt: `${this.pageTitle} - ${this.pageURL}`,
+    }[this.type]
   }
 }
