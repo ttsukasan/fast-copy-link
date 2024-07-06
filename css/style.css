@@ -6,6 +6,9 @@
  * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
  * Kroc Camen, and the H5BP dev community and team.
  */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* ==========================================================================
    Base styles: opinionated defaults
@@ -84,45 +87,10 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-.mb-5 {
-  margin-bottom: 3rem;
-}
-
-.mb-10 {
-  margin-bottom: 6rem;
-}
-
-.mb-15 {
-  margin-bottom: 9rem;
-}
-
-.mb-20 {
-  margin-bottom: 12rem;
-}
-
-.mb-30 {
-  margin-bottom: 18rem;
-}
-
-.mb-40 {
-  margin-bottom: 24rem;
-}
-
-.mt-10 {
-  margin-top: 6rem;
-}
-
-.pt-10 {
-  padding-top: 6rem;
-}
-
-.h-20 {
-  height: 12rem;
-}
-
-a.button.large {
-  font-size: 2.25rem;
-  padding: 1.5rem 6rem;
+.text-shadow-heavy{
+  text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+    0px 8px 13px rgba(0,0,0,0.1),
+    0px 18px 23px rgba(0,0,0,0.1);
 }
 
 /* ==========================================================================

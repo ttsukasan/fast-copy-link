@@ -1,2 +1,2 @@
-import 'chota'
 import './index'
+import '../css/style.css'
