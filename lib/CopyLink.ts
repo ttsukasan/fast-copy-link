@@ -49,6 +49,7 @@ export class CopyLink {
     toast.style.transition = 'opacity .3s ease-in'
     toast.style.color = this.colors.txt
     toast.style.opacity = '1'
+    toast.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)'
     toast.dataset.active = '1'
     return toast
   }
