@@ -75,9 +75,7 @@
     <div class="px-5 py-10">
       <h3 id="install" class="text-xl font-bold mb-4">インストール</h3>
     </div>
-    <figure class="bg-local bg-cover bg-center" style="background-image: url(./img/fcl_install.gif);">
-      <div class="h-64"></div>
-    </figure>
+    <img class="w-full" src="./img/fcl_install.gif" alt="インストール">
     <div class="px-5 py-10">
       <div class="mb-10 text-center">
         <a class="script-button btn btn-primary btn-lg min-w-72">📋リンクをコピー</a>
@@ -96,18 +94,16 @@
     <div class="px-5 py-10">
       <h3 id="usage" class="text-xl font-bold mb-4">使用方法</h3>
     </div>
-    <figure class="bg-local bg-cover bg-center" style="background-image: url(./img/fcl_tutorial.gif);">
-      <div class="h-64"></div>
-    </figure>
+    <img class="w-full" src="./img/fcl_tutorial.gif" alt="使用方法">
     <div class="px-5 py-10">
       <div class="mb-4">
         <div>実行すると、画面左上にダイアログが表示されます。</div>
         <div>使用するコピー形式をクリックすることで、リンクがクリップボードにコピーされます。</div>
       </div>
       <h4 class="font-bold mb-4">コピー形式について</h4>
-      <div><strong class="">ハイパーリンク</strong>SlackやGoogleドキュメントへの貼り付けにオススメです。</div>
-      <div><strong>Markdown</strong>GithubやBacklogなどのサービスで利用される形式です</div>
-      <div><strong>テキスト形式</strong>シンプルにタイトルとURLをコピーします。</div>
+      <div><strong class="">ハイパーリンク</strong> SlackやGoogleドキュメントへの貼り付けにオススメです。</div>
+      <div><strong>Markdown</strong> GithubやBacklogなどのサービスで利用される形式です</div>
+      <div><strong>テキスト形式</strong> シンプルにタイトルとURLをコピーします。</div>
     </div>
     <hr>
     <div class="px-5 py-10">
@@ -122,13 +118,17 @@
         <div>対応ブラウザ: Google Chrome, Safari （その他は未確認）</div>
       </div>
       <div class="mb-4">使用するサイトやページタイトルによって挙動が変わることがあります。</div>
-      <ul class="list-disc ml-10">
-        <li>ページタイトル先頭が <code class="font-bold text-secondary">[</code> で始まる場合、対応する <code class="font-bold text-secondary">]</code>と共にスペースに置き換えます。
+      <ul class="list-disc ml-5">
+        <li>
+          ページタイトル先頭が <code class="text-accent-content bg-accent py-0.5 px-1">[</code> で始まる場合、対応する
+          <code class="text-accent-content bg-accent py-0.5 px-1">]</code>と共にスペースに置き換えます。
         </li>
-        <li>ページタイトル末尾の <code class="font-bold text-secondary">| 課題の表示 | Backlog</code> ,<code class="font-bold text-secondary">| Backlog</code>
+        <li>
+          ページタイトル末尾の <code class="text-accent-content bg-accent py-0.5 px-1">| 課題の表示 | Backlog</code> ,
+          <code class="text-accent-content bg-accent py-0.5 px-1">| Backlog</code>
           を除去します。
         </li>
-        <li>ページタイトル末尾の <code class="font-bold text-secondary">- xxxxxx.esa.io</code> を除去します。</li>
+        <li>ページタイトル末尾の <code class="text-accent-content bg-accent py-0.5 px-1">- xxxxxx.esa.io</code> を除去します。</li>
         <li>ページタイトルの両端の空白は除去します。また、2文字以上連続した空白は1文字に置き換えます。</li>
       </ul>
     </div>
