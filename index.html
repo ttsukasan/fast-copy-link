@@ -4,15 +4,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>リンクコピー能力</title>
+  <title>リンクコピー能力 - 簡単なリンクコピーで作業効率アップ！</title>
   <meta name="description"
-        content="Webページのリンクを簡単にコピーできる便利なブックマークレット。ブラウザで動作し、プラグインのように簡単に使えます。オフィスでの作業効率をアップし、友達との情報共有もスムーズに。リンクコピー、URLコピー、Webリンク共有に最適です。">
+        content="リンクコピー能力は、ブラウザ上で動作する便利なブックマークレットです。Webページのリンクを簡単にコピーし、オフィスでの作業効率を大幅に向上。友達との情報共有もスムーズに。">
 
   <meta property="og:title" content="リンクコピー能力">
-  <meta property="og:type" content="">
-  <meta property="og:url" content="">
-  <meta property="og:image" content="">
-  <meta property="og:image:alt" content="">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ttsukasan.github.io/fast-copy-link/">
+  <meta property="og:image" content="https://ttsukasan.github.io/fast-copy-link/img/og.png">
+  <meta property="og:image:alt" content="リンクコピー能力 Webページのリンクを一瞬でコピー！ ブックマークレットであなたの作業をもっとスムーズに。">
 
   <link rel="icon" href="/fast-copy-link/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" sizes="180x180" href="/fast-copy-link/img/apple-touch-icon.png">
@@ -40,8 +40,15 @@
 
 <div class="flex flex-col min-h-screen">
   <header class="bg-primary text-primary-content py-5">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
       <h1 class="text-2xl font-bold">リンクコピー能力</h1>
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="#features" class="text-primary-content">機能</a></li>
+          <li><a href="#install" class="text-primary-content">インストール</a></li>
+          <li><a href="#usage" class="text-primary-content">使用方法</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
   <main class="flex-grow car max-w-4xl mx-auto shadow-2xl my-10 rounded-2xl leading-loose">
@@ -56,17 +63,20 @@
       </div>
     </figure>
     <div class="py-20 px-10">
-      <h3 class="text-xl font-bold mb-4">リンクコピー能力</h3>
+      <h3 id="features" class="text-xl font-bold mb-4">リンクコピー能力</h3>
       <div class="mb-4">
         <div>WebページのタイトルとURLをコピーできる<strong>ブックマークレットツール</strong>です。</div>
         <div>クリップボードにコピーされるため、他のドキュメントやアプリへの記載が簡単になります。</div>
       </div>
     </div>
+    <hr>
+    <div class="p-10">
+      <h3 id="install" class="text-xl font-bold mb-4">インストール</h3>
+    </div>
     <figure class="bg-local bg-cover bg-center" style="background-image: url(./img/fcl_install.gif);">
       <div class="h-64"></div>
     </figure>
-    <div class="py-20 px-10">
-      <h3 class="text-xl font-bold mb-4">インストール</h3>
+    <div class="p-10">
       <div class="mb-10 text-center">
         <a class="script-button btn btn-primary btn-lg min-w-72">📋リンクをコピー</a>
       </div>
@@ -80,11 +90,14 @@
         <div>登録後は、いつでもこのブックマークをクリックして、WebページのタイトルとURLを簡単にコピーすることができます。</div>
       </div>
     </div>
+    <hr>
+    <div class="p-10">
+      <h3 id="usage" class="text-xl font-bold mb-4">使用方法</h3>
+    </div>
     <figure class="bg-local bg-cover bg-center" style="background-image: url(./img/fcl_tutorial.gif);">
       <div class="h-64"></div>
     </figure>
-    <div class="py-20 px-10">
-      <h3 class="text-xl font-bold mb-4">使用方法</h3>
+    <div class="p-10">
       <div class="mb-4">
         <div>実行すると、画面左上にダイアログが表示されます。</div>
         <div>使用するコピー形式をクリックすることで、リンクがクリップボードにコピーされます。</div>
@@ -94,11 +107,13 @@
       <div><strong>Markdown</strong>GithubやBacklogなどのサービスで利用される形式です</div>
       <div><strong>テキスト形式</strong>シンプルにタイトルとURLをコピーします。</div>
     </div>
+    <div class="p-10">
+      <h3 class="text-xl font-bold mb-4">その他の仕様</h3>
+    </div>
     <figure class="bg-local bg-cover bg-center" style="background-image: url(./img/sensei.webp);">
       <div class="h-48"></div>
     </figure>
-    <div class="py-20 px-10">
-      <h3 class="text-xl font-bold mb-4">その他の仕様</h3>
+    <div class="p-10">
       <div class="mb-4">
         <div>対応端末: PC</div>
         <div>対応ブラウザ: Google Chrome, Safari （その他は未確認）</div>
@@ -122,7 +137,7 @@
     </p>
     <nav>
       <div class="grid grid-flow-col gap-4">
-        <a href="#">
+        <a href="https://github.com/ttsukasan/fast-copy-link">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -133,7 +148,7 @@
               d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
           </svg>
         </a>
-        <a href="#">
+        <a href="https://x.com/ttsukasan">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
