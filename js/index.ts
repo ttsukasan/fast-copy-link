@@ -19,7 +19,3 @@ Promise.all(fileUrls.map(url =>
 }).catch(error => {
   console.error('ファイルを読み込めませんでした。', error);
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-  document.body.classList.add('loaded');
-});
