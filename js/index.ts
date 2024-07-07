@@ -20,6 +20,6 @@ Promise.all(fileUrls.map(url =>
   console.error('ファイルを読み込めませんでした。', error);
 });
 
-window.addEventListener('load', function () {
+document.addEventListener('DOMContentLoaded', function () {
   document.body.classList.add('loaded');
 });
